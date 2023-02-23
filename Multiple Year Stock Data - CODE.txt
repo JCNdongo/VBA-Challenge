@@ -1,0 +1,180 @@
+Sub Forloops()
+
+'Set a variable for tickers
+    Dim tickers As String
+
+'Set a variable for the yearly change per ticker
+    Dim YearlyChange As Double
+    YearlyChange = 0
+
+'Set a variable for the percentage change per ticker
+    Dim PercentageChange As Double
+    PercentageChange = 0
+    
+'Set a variable for the total stock volume per ticker
+    Dim TotalStock As Double
+    TotalStock = 0
+    
+'Keep track of the location of each ticker
+    Dim summary_ticker As Integer
+    summary_ticker = 2
+    
+'Loop through all ticker symbols
+    For i = 2 To 753001
+
+'Check if we are still within the same ticker, if it is not ...
+    If Cells(i + 1, 1).Value <> Cells(i, 1).Value Then
+    
+'Set the ticker name
+    ticker = Cells(i, 1).Value
+    
+'Add to the yearly change
+    YearlyChange = YearlyChange + Cells(i, 8).Value
+    
+'Add to the Percentage change
+    PercentageChange = PercentageChange + Cells(i, 9).Value
+    
+'Add to the Total Stock Volume change
+    TotalStock = TotalStock + Cells(i, 10).Value
+    
+'Print the ticker name in the ticker column
+    Range("L" & summary_ticker).Value = ticker
+        
+'Print the ticker name in the ticker column
+    Range("M" & summary_ticker).Value = YearlyChange
+    
+'Print the ticker name in the ticker column
+    Range("N" & summary_ticker).Value = PercentageChange
+    
+'Print the ticker name in the ticker column
+    Range("O" & summary_ticker).Value = TotalStock
+    
+'Add one to the summary_ticker row
+    summary_ticker = summary_ticker + 1
+    
+'Reset the Yearly Change
+    YearlyChange = 0
+   
+'Reset the Yearly Change
+    PercentageChange = 0
+    
+'Reset the Yearly Change
+    TotalStock = 0
+    
+'If the next cell in a row is the same ticker..
+    Else
+
+'Add to the Yearly Change column
+    YearlyChange = YearlyChange + Cells(i, 8).Value
+    
+'Add to the Percentage Change column
+    PercentageChange = PercentageChange + Cells(i, 9).Value
+    
+'Add to the Total stock volume column
+    TotalStock = TotalStock + Cells(i, 9).Value
+    
+    End If
+    
+    Next i
+    
+'Add a conditional loop to color code tickers that are greater or lesser than 0
+
+    For i = 2 To 3001
+           
+           For j = 13 To 13
+               
+               If Cells(i, j).Value < 0 Then
+        
+                Cells(i, j).Interior.ColorIndex = 3
+                
+                Else
+            
+                Cells(i, j).Interior.ColorIndex = 4
+            
+                End If
+                
+                Next j
+        
+        Next i
+
+End Sub
+Sub Greatest()
+
+'Create variables for greatest increase and decrease in percentage
+
+    Dim xmax As Double
+    Dim xmin As Double
+    
+'Determine range of data to be analyzed to identify the variables above
+
+    Dim r As Range
+    
+    Set r = Range("N2:N" & Rows.Count)
+    xmin = Application.WorksheetFunction.Min(r)
+    xmax = Application.WorksheetFunction.Max(r)
+    
+'Determine where to input the greatest increase and decrease in percentage
+
+    Cells(2, 20).Value = xmax
+    Cells(3, 20).Value = xmin
+    
+End Sub
+Sub GreatestVolume()
+
+'Create variables for greatest increase in volume
+
+    Dim xvol As Double
+        
+'Determine range of data to be analyzed to identify the variable above
+
+    Dim r As Range
+    
+    Set r = Range("O2:O" & Rows.Count)
+    xvol = Application.WorksheetFunction.Max(r)
+    
+'Determine where to input the greatest increase in volume
+
+    Cells(4, 20).Value = xvol
+  
+End Sub
+Sub tickers()
+    ' Create variables. (Used "Long" because the numbers exceed the limit for integers)
+    Dim increase As Long
+    Dim decrease As Long
+    Dim volume As Long
+   
+
+    ' Establish the variables to search
+    increase = 0.833885634666092
+    decrease = -1.45487172934854
+    volume = 0.812697004175136
+
+
+    ' Loop through each row
+    For i = 1 To 3001
+
+        ' Check if a number matches the increase...
+        If Cells(i, 14).Value = increase Then
+
+            ' Retrieve the ticker associated with the increase.
+            Cells(2, 19).Value = Cells(i, 12).Value
+            
+        ' Check if a number matches the decrease.
+        ElseIf Cells(i, 14).Value = decrease Then
+            
+            ' Retrieve the ticker associated with the decrease.
+            Cells(3, 19).Value = Cells(i, 12).Value
+            
+        ' Check if a number matches the volume.
+        ElseIf Cells(i, 15).Value = volume Then
+           
+            ' Retrieve the ticker associated with the volume.
+            Cells(4, 19).Value = Cells(i, 12).Value
+            
+        ' Ends this series of IF/ELSE conditionals
+        End If
+
+    Next i
+    
+End Sub
+
